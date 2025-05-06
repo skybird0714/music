@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音乐播放器</title>
+    <link rel="icon" href="images/favicon.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* 图片预加载器 */
+        .preloader {
+            position: absolute;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+            z-index: -1;
+        }
+        
+        /* 美化下拉框 */
+        select#playMode {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 8px 30px 8px 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: black;
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+        
+        select#playMode:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        select#playMode:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* 设置下拉选项的样式 */
+        select#playMode option {
+            background-color: white;
+            color: black;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景图片预加载器 -->
+    <div class="preloader">
+        <img src="images/1.png" alt="preload">
+        <img src="images/2.png" alt="preload">
+        <img src="images/3.png" alt="preload">
+        <img src="images/4.png" alt="preload">
+        <img src="images/5.png" alt="preload">
+    </div>
+    
+    <div class="music-player-container">
+        <div class="background-slider"></div>
+        
+        <div class="player-section">
+            <div class="player-glass">
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>点击或拖拽音乐文件到这里上传</p>
+                    <input type="file" id="fileUpload" accept="audio/*" hidden>
+                </div>
+                
+                <div class="player-info" id="playerInfo" style="display: none;">
+                    <div class="album-cover">
+                        <img id="albumCover" src="" alt="专辑封面">
+                    </div>
+                    <div class="song-info">
+                        <h3 id="songTitle">歌曲名称</h3>
+                        <p id="artistName">艺术家</p>
+                    </div>
+                    <div class="lyrics-container">
+                        <div id="lyrics" class="lyrics"></div>
+                    </div>
+                    <div class="player-controls">
+                        <div class="progress-bar">
+                            <div class="progress" id="progressBar"></div>
+                            <div class="progress-handle" id="progressHandle"></div>
+                        </div>
+                        <div class="time-info">
+                            <span id="currentTime">00:00</span>
+                            <span id="totalTime">00:00</span>
+                        </div>
+                        <div class="control-buttons">
+                            <button id="prevBtn" class="control-btn">上一首</button>
+                            <button id="playBtn" class="control-btn">播放</button>
+                            <button id="nextBtn" class="control-btn">下一首</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="playlist-section">
+                <div class="playlist-header">
+                    <h3>播放列表</h3>
+                    <div class="playlist-controls">
+                        <select id="playMode">
+                            <option value="order">顺序播放</option>
+                            <option value="random">随机播放</option>
+                            <option value="single">单曲循环</option>
+                        </select>
+                        <button id="clearAllBtn">清空列表</button>
+                    </div>
+                </div>
+                <div class="playlist-container" id="playlistContainer">
+                    <!-- 播放列表项将在这里动态生成 -->
+                </div>
+                <div class="playlist-upload">
+                    <label for="multiUpload" class="upload-button">批量添加音乐</label>
+                    <input type="file" id="multiUpload" accept="audio/*" multiple hidden>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="player-footer">
+            <div class="footer-links">
+                <span>音乐播放器🎵beta 1.0 | </span>
+                <a href="https://space.bilibili.com/515626972" target="_blank">@天空天堂鸟</a> | 
+                <a href="https://start.071400.xyz/" target="_blank">起始页</a> | 
+                <a href="https://071400.xyz/" target="_blank">博客</a> | 
+                <a href="https://071400.xyz/2025/05/musicplayer/" target="_blank">使用说明</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html> 

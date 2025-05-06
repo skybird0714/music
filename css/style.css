@@ -1,0 +1,462 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+body {
+    background-color: #333;
+    background-image: linear-gradient(45deg, #2c3e50, #4ca1af);
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.music-player-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.background-slider {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background-size: cover;
+    background-position: center center;
+    transition: background-image 1s ease-in-out;
+}
+
+.player-section {
+    display: flex;
+    flex: 1;
+    padding: 40px;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    height: calc(100vh - 50px);
+}
+
+/* 毛玻璃效果 */
+.player-glass, .playlist-section {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    max-height: 80vh;
+}
+
+.player-glass {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: all 0.3s ease;
+    min-width: 400px;
+    max-width: 700px;
+}
+
+.upload-area {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 3px dashed rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    color: white;
+    padding: 50px;
+}
+
+.upload-area i {
+    font-size: 60px;
+    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.upload-area p {
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.upload-area:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.player-info {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.album-cover {
+    width: 250px;
+    height: 250px;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.album-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.song-info {
+    text-align: center;
+    margin-bottom: 15px;
+    color: white;
+}
+
+.song-info h3 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.song-info p {
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+.lyrics-container {
+    width: 100%;
+    height: 180px;
+    overflow-y: auto;
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+}
+
+.lyrics {
+    color: white;
+    text-align: center;
+    line-height: 1.6;
+}
+
+.lyrics p {
+    margin: 5px 0;
+    transition: all 0.3s ease;
+}
+
+.lyrics p.active {
+    color: #1db954;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.player-controls {
+    width: 100%;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    position: relative;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.progress {
+    height: 100%;
+    background-color: #1db954;
+    border-radius: 3px;
+    width: 0%;
+}
+
+.progress-handle {
+    width: 16px;
+    height: 16px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: none;
+}
+
+.progress-bar:hover .progress-handle {
+    display: block;
+}
+
+.time-info {
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.control-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.control-btn {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* 播放列表部分 */
+.playlist-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    min-width: 300px;
+}
+
+.playlist-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.playlist-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.playlist-controls select, .playlist-controls button {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.playlist-container {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 15px;
+}
+
+.playlist-empty {
+    text-align: center;
+    padding: 20px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.playlist-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.playlist-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.playlist-item.active {
+    background-color: rgba(29, 185, 84, 0.3);
+}
+
+.playlist-item-info {
+    flex: 1;
+    overflow: hidden;
+}
+
+.playlist-item-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
+}
+
+.playlist-item-artist {
+    font-size: 12px;
+    opacity: 0.7;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.playlist-item-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.playlist-item-actions button {
+    background-color: transparent;
+    color: white;
+    border: none;
+    opacity: 0.7;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.playlist-item-actions button:hover {
+    opacity: 1;
+}
+
+.playlist-upload {
+    text-align: center;
+}
+
+.upload-button {
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.player-footer {
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(15px);
+    text-align: center;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+.footer-links {
+    font-size: 14px;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.footer-links a:hover {
+    opacity: 0.8;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* 响应式设计 */
+@media (max-width: 1100px) {
+    .player-section {
+        flex-direction: column;
+        padding: 20px;
+        height: auto;
+        overflow-y: auto;
+        margin-bottom: 50px;
+    }
+    
+    .player-glass, .playlist-section {
+        width: 100%;
+        max-width: 600px;
+        margin-bottom: 20px;
+    }
+    
+    .album-cover {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .lyrics-container {
+        height: 150px;
+    }
+}
+
+@media (max-width: 600px) {
+    .player-section {
+        padding: 15px;
+    }
+    
+    .player-glass, .playlist-section {
+        padding: 20px;
+        min-width: auto;
+    }
+    
+    .album-cover {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .lyrics-container {
+        height: 120px;
+    }
+    
+    .control-buttons {
+        gap: 10px;
+    }
+    
+    .control-btn {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+} 
